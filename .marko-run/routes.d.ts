@@ -13,8 +13,43 @@ import type * as $ from "@marko/run";
 
 declare module "@marko/run" {
 	interface App extends $.DefineRoutes<{
-		"/": [L1, P1, D1];
+		"/": [H1, L1, P1, D1];
 	}> {}
+}
+
+type H1 = $.Handler<"H1", typeof import("../src/routes/+handler")>;
+declare module "../src/routes/+handler" {
+  const Run: $.Namespace<H1>;
+  namespace Run {
+    type Context = $.ContextForFile<H1>;
+  }
+
+  /** @deprecated use `Run` namespace instead */
+  namespace MarkoRun {
+    export { NotHandled, NotMatched, GetPaths, PostPaths, GetablePath, GetableHref, PostablePath, PostableHref, Platform };
+    /** @deprecated use the `Run` namespace instead */
+    export type Route = $.Routes["/"];
+    /** @deprecated use `Run.Context` instead */
+    export type Context = $.MultiRouteContext<Route>;
+    /** @deprecated define handlers with `Run.GET(...)`, `Run.POST(...)`, etc. instead */
+    export type Handler = $.HandlerLike<Route>;
+    /** @deprecated define handlers with `Run.GET(...)` instead */
+    export type GET = $.HandlerLike<Route, "GET">;
+    /** @deprecated define handlers with `Run.HEAD(...)` instead */
+    export type HEAD = $.HandlerLike<Route, "HEAD">;
+    /** @deprecated define handlers with `Run.POST(...)` instead */
+    export type POST = $.HandlerLike<Route, "POST">;
+    /** @deprecated define handlers with `Run.PUT(...)` instead */
+    export type PUT = $.HandlerLike<Route, "PUT">;
+    /** @deprecated define handlers with `Run.DELETE(...)` instead */
+    export type DELETE = $.HandlerLike<Route, "DELETE">;
+    /** @deprecated define handlers with `Run.PATCH(...)` instead */
+    export type PATCH = $.HandlerLike<Route, "PATCH">;
+    /** @deprecated define handlers with `Run.OPTIONS(...)` instead */
+    export type OPTIONS = $.HandlerLike<Route, "OPTIONS">;
+    /** @deprecated define handlers with `Run.QUERY(...)` instead */
+    export type QUERY = $.HandlerLike<Route, "QUERY">;
+  }
 }
 
 type L1 = $.Template<"L1", typeof import("../src/routes/+layout.marko")>;

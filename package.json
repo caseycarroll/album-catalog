@@ -4,19 +4,23 @@
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
+    "@libsql/client": "^0.18.0",
+    "dotenv": "^18.0.9",
     "drizzle-orm": "^1.0.0-rc.5",
     "marko": "^6.3.42"
   },
   "devDependencies": {
     "@marko/run": "^0.11.12",
     "@types/node": "^26.6.5",
-    "drizzle-kit": "^1.0.0-rc.5"
+    "drizzle-kit": "^1.0.0-rc.5",
+    "typescript": "^6.0.3"
   },
   "private": true,
   "scripts": {
     "dev": "marko-run",
     "build": "marko-run build",
     "preview": "marko-run preview",
-    "start": "node --enable-source-maps ./dist/index.mjs"
+    "start": "node --enable-source-maps ./dist/index.mjs",
+    "seed:db": "tsx ./src/db/seed.ts"
   }
 }
