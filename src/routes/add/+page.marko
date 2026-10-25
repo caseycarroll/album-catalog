@@ -1,7 +1,3 @@
-static function coverArtUrl(mbid: string, size: 250 | 500 = 250) {
-  return `https://coverartarchive.org/release-group/${mbid}/front-${size}`;
-}
-
 <const/{ query, results: resultsPromise }=$global.data>
 
 <h1>Add album</h1>
@@ -25,16 +21,9 @@ static function coverArtUrl(mbid: string, size: 250 | 500 = 250) {
   <await|results|=resultsPromise>
     <if=results.length>
       <ul role="list">
-        <for|album| of=results by="mbid">
+        <for|{ album, owned }| of=results by=(result => result.album.id)>
           <li>
-            <album ...album>
-              <@trailing>
-                <form method="post">
-                  <input type="hidden" name="mbid" value=album.mbid>
-                  <button>Add</button>
-                </form>
-              </@trailing>
-            </album>
+            <album ...album owned=owned/>
           </li>
         </for>
       </ul>

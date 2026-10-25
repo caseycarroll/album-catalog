@@ -1,30 +1,70 @@
 import type { albumsTable } from "../db/schema";
 
-export type Input = {
-  trailing: Marko.Body
-} & typeof albumsTable.$inferSelect;
+export type Input = typeof albumsTable.$inferSelect & {
+  owned: boolean;
+};
 
+// Transient request state only. Whether the album is owned is never copied
+// into component state: the server decides the initial `checked`, and the
+// native checkbox owns the toggled value after that.
+<let/pending=false>
+<let/failed=false>
 
+<form class="album-info" method="post" action="/albums">
+  <input type="hidden" name="id" value=input.id>
+  <input type="hidden" name="title" value=input.title>
+  <input type="hidden" name="artist" value=input.artist>
+  <if=input.image>
+    <input type="hidden" name="image" value=input.image>
+  </if>
 
-<div class="album-info">
-  <img
-    src=input.image
-    alt=""
-    width="80"
-    height="80"
-  >
+  <img src=input.image alt="" width="80" height="80">
   <div>
-    <a href="#">
-      ${input.title}
-    </a>
-    <p>
-      ${input.artist}
-    </p>
+    <a href="#">${input.title}</a>
+    <p>${input.artist}</p>
   </div>
+
   <div class="album-info--trailing">
-    <${input.trailing} />
+    <label>
+      <input
+        type="checkbox"
+        name="owned"
+        checked=input.owned
+        disabled=pending
+        async onChange(_event, checkbox) {
+          const form = checkbox.form;
+          if (!form) return;
+          // Capture before `disabled` applies: disabled controls aren't submitted.
+          const body = new FormData(form);
+          pending = true;
+          failed = false;
+          try {
+            const res = await fetch(form.action, {
+              method: "POST",
+              body,
+              headers: { Accept: "application/json" },
+            });
+            if (!res.ok) throw new Error(`Catalog update failed: ${res.status}`);
+          } catch (err) {
+            console.error(err);
+            // Put the checkbox back so it reflects what the server has.
+            checkbox.checked = !checkbox.checked;
+            failed = true;
+          } finally {
+            pending = false;
+          }
+        }
+      >
+      Owned<span class="visually-hidden"> (${input.title})</span>
+    </label>
+    <noscript>
+      <button>Save</button>
+    </noscript>
+    <if=failed>
+      <p role="alert">Couldn't update your catalog. Try again.</p>
+    </if>
   </div>
-</div>
+</form>
 
 <style>
     .album-info {
@@ -48,6 +88,19 @@ export type Input = {
 
         .album-info--trailing {
             margin-inline-start: auto;
+        }
+
+        label:has(:disabled) {
+            opacity: 0.6;
+        }
+
+        .visually-hidden {
+            clip-path: inset(50%);
+            height: 1px;
+            overflow: hidden;
+            position: absolute;
+            white-space: nowrap;
+            width: 1px;
         }
     }
 </style>

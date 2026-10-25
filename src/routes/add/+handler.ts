@@ -1,5 +1,7 @@
 import * as v from "valibot";
-import type { albumsTable } from "../../db/schema";
+import { inArray } from "drizzle-orm";
+import { albumsTable } from "../../db/schema";
+import { db } from "../../db";
 
 const USER_AGENT = "Casey's Catalog/1.0 (aiyakc@gmail.com)";
 
@@ -40,17 +42,32 @@ export async function searchAlbums(name: string): Promise<typeof albumsTable.$in
     id: rg.id,
     title: rg.title,
     artist: rg["artist-credit"].map((c) => c.name + (c.joinphrase ?? "")).join(""),
-    image: `http://coverartarchive.org/release-group/${rg.id}/front-250`
+    image: `https://coverartarchive.org/release-group/${rg.id}/front-250`
   }));
 }
 
+
+// Search MusicBrainz, then mark which results are already in the catalog so
+// each result can render as owned or not.
+async function searchWithCatalogState(query: string) {
+  const albums = await searchAlbums(query);
+  if (!albums.length) return [];
+
+  const saved = await db
+    .select({ id: albumsTable.id })
+    .from(albumsTable)
+    .where(inArray(albumsTable.id, albums.map((album) => album.id)));
+  const savedIds = new Set(saved.map((row) => row.id));
+
+  return albums.map((album) => ({ album, owned: savedIds.has(album.id) }));
+}
 
 export const GET = Run.GET(
   { search: v.object({ q: v.optional(v.pipe(v.string(), v.trim(), v.minLength(1))) }) },
   (ctx, next) => {
     const [search, issues] = ctx.search;
     const query = issues ? "" : (search.q ?? "");
-    const results = query ? searchAlbums(query) : Promise.resolve([]);
+    const results = query ? searchWithCatalogState(query) : Promise.resolve([]);
     return next({ query, results });
   },
 );

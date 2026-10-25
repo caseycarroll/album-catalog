@@ -1,18 +1,15 @@
-import { db } from './index'
+import { db } from './index';
 import { albumsTable } from './schema';
 
+// Release-group MBIDs (the "album"), not release MBIDs (a specific pressing).
+// Cover art uses the same Cover Art Archive URL shape as searchAlbums().
+const coverArt = (id: string) => `https://coverartarchive.org/release-group/${id}/front-250`;
+
+const albums = [
+  { id: 'bc8868e9-dda3-477d-ab89-b62d82cd7ea7', title: 'Pop 2', artist: 'Charli XCX' },
+  { id: '3353a8a0-a5ab-4970-b34e-090afcc2bba7', title: 'Human Performance', artist: 'Parquet Courts' },
+  { id: '8b53c7f1-d1b0-48ef-8b36-08cec0b84b6d', title: 'Intersections', artist: 'Into It. Over It.' },
+].map((album) => ({ ...album, image: coverArt(album.id) }));
+
 await db.delete(albumsTable);
-await db.insert(albumsTable).values([
-  {
-    id: 'a37ef171-cdf1-456a-96be-4a38b74ce225',
-    title: 'Pop 2',
-    artist: 'Charli XCX',
-    image: 'https://archive.org/download/mbid-a37ef171-cdf1-456a-96be-4a38b74ce225/mbid-a37ef171-cdf1-456a-96be-4a38b74ce225-18513150154_thumb500.jpg'
-  },
-  {
-    id: '1fc0d2c5-ecff-4b08-b74d-3428726e313d',
-    title: 'Human Performance',
-    artist: 'Parquet Courts',
-    image: 'https://archive.org/download/mbid-1fc0d2c5-ecff-4b08-b74d-3428726e313d/mbid-1fc0d2c5-ecff-4b08-b74d-3428726e313d-13152570491_thumb500.jpg'
-  }
-])
+await db.insert(albumsTable).values(albums);
