@@ -4,8 +4,6 @@ export type Input = typeof albumsTable.$inferSelect & {
   owned: boolean;
 };
 
-// Stateless: the server renders whether the album is owned, the button posts
-// the opposite intent, and the page reloads with the refreshed state.
 <form class="album-info" method="post" action="/albums">
   <input type="hidden" name="id" value=input.id>
   <input type="hidden" name="title" value=input.title>

@@ -1,56 +1,13 @@
 import * as v from "valibot";
 import { inArray } from "drizzle-orm";
-import { albumsTable } from "../../db/schema";
 import { db } from "../../db";
-
-const USER_AGENT = "Casey's Catalog/1.0 (aiyakc@gmail.com)";
-
-const ReleaseGroupSearchSchema = v.object({
-  "release-groups": v.array(
-    v.object({
-      id: v.string(),
-      title: v.string(),
-      "first-release-date": v.optional(v.string()),
-      "artist-credit": v.optional(
-        v.array(v.object({ name: v.string(), joinphrase: v.optional(v.string()) })),
-        [],
-      ),
-    }),
-  ),
-});
-
-// Lucene special characters must be escaped, otherwise a user typing a quote
-// or colon breaks (or changes the meaning of) the query.
-function escapeLucene(value: string) {
-  return value.replace(/[+\-&|!(){}[\]^"~*?:\\/]/g, "\\$&");
-}
-
-export async function searchAlbums(name: string): Promise<typeof albumsTable.$inferSelect[]> {
-  const url = new URL("https://musicbrainz.org/ws/2/release-group");
-  url.search = new URLSearchParams({
-    query: `releasegroup:"${escapeLucene(name)}" AND primarytype:album`,
-    fmt: "json",
-    limit: "5",
-  }).toString();
-
-  const res = await fetch(url, { headers: { "User-Agent": USER_AGENT } });
-  if (!res.ok) throw new Error(`MusicBrainz responded ${res.status}`);
-
-  const data = v.parse(ReleaseGroupSearchSchema, await res.json());
-
-  return data["release-groups"].map((rg) => ({
-    id: rg.id,
-    title: rg.title,
-    artist: rg["artist-credit"].map((c) => c.name + (c.joinphrase ?? "")).join(""),
-    image: `https://coverartarchive.org/release-group/${rg.id}/front-250`
-  }));
-}
-
+import { cachedSearch } from "../../lib/cachedSearch";
+import { albumsTable } from "../../db/schema";
 
 // Search MusicBrainz, then mark which results are already in the catalog so
 // each result can render as owned or not.
 async function searchWithCatalogState(query: string) {
-  const albums = await searchAlbums(query);
+  const albums = await cachedSearch(query);
   if (!albums.length) return [];
 
   const saved = await db

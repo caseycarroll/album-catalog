@@ -1,12 +1,13 @@
 :root {
-    --space-sm: 4px;
-    --space-md: 8px;
-    --space-lg: 16px;
-    --space-xl: 32px;
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 32px;
+    --space-xl: 64px;
     --font-sm: 0.825rem;
     --font-lg: 1.25rem;
     --gutter: var(--space-md);
-    --flow-space: var(--space-xl);
+    --flow-space: var(--space-lg);
     --primary-font-color: #2f2f2f;
 }
 /* Box sizing rules */
@@ -94,6 +95,10 @@ textarea:not([rows]) {
 
 .flow > * + * {
     margin-block-start: var(--flow-space);
+}
+
+.flow :is(h1, h2, h3) + * {
+    --flow-space: var(--space-xl);
 }
 
 form {

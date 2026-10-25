@@ -22,7 +22,7 @@
         display: grid;
         grid-template-columns: minmax(8px, 1fr) minmax(min(40ch, calc(100% - 16px)), 600px) minmax(8px, 1fr);
         grid-template-areas: "gutter-start content gutter-end";
-        margin-block-start: var(--space-xl);
+        padding-block-start: calc(var(--space-xl) * 2);
     }
     .content {
         grid-area: content;
