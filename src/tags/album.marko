@@ -1,6 +1,10 @@
 import type { albumsTable } from "../db/schema";
 
-export type Input = typeof albumsTable.$inferSelect;
+export type Input = {
+  trailing: Marko.Body
+} & typeof albumsTable.$inferSelect;
+
+
 
 <div class="album-info">
   <img
@@ -16,6 +20,9 @@ export type Input = typeof albumsTable.$inferSelect;
     <p>
       ${input.artist}
     </p>
+  </div>
+  <div class="album-info--trailing">
+    <${input.trailing} />
   </div>
 </div>
 
@@ -37,6 +44,10 @@ export type Input = typeof albumsTable.$inferSelect;
 
         img {
             border-radius: 10px;
+        }
+
+        .album-info--trailing {
+            margin-inline-start: auto;
         }
     }
 </style>

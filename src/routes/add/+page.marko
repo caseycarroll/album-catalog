@@ -27,11 +27,14 @@ static function coverArtUrl(mbid: string, size: 250 | 500 = 250) {
       <ul role="list">
         <for|album| of=results by="mbid">
           <li>
-            <album ...album />
-            <form method="post">
-              <input type="hidden" name="mbid" value=album.mbid>
-              <button>Add</button>
-            </form>
+            <album ...album>
+              <@trailing>
+                <form method="post">
+                  <input type="hidden" name="mbid" value=album.mbid>
+                  <button>Add</button>
+                </form>
+              </@trailing>
+            </album>
           </li>
         </for>
       </ul>
