@@ -81,6 +81,19 @@ label {
     display: block;
 }
 
+input:not([type='checkbox'], [type='radio'], [type='color']) {
+    border: 1px solid var(--secondary-font-color);
+    border-radius: 4px;
+    background-color: #fafafa;
+    opacity: 80%;
+    &:hover {
+        opacity: 1;
+    }
+    &:focus {
+        opacity: 1;
+    }
+}
+
 button {
     background-color: #cddce1;
     border: 1px solid #77a8b9;

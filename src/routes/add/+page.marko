@@ -20,9 +20,12 @@
 </search>
 
 <try>
-  <@placeholder>Loading...</@placeholder>
+  <@placeholder>
+    <loading />
+  </@placeholder>
   <await|results|=resultsPromise>
     <if=results.length>
+      <h3>Results</h3>
       <ul role="list">
         <for|{ album, owned }| of=results by=(result => result.album.id)>
           <li>
