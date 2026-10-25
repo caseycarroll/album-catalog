@@ -23,7 +23,7 @@ async function searchAlbums(normalizedQuery: string): Promise<typeof albumsTable
   url.search = new URLSearchParams({
     query: `releasegroup:"${normalizedQuery}" AND primarytype:album`,
     fmt: "json",
-    limit: "5",
+    limit: "15",
   }).toString();
 
   const res = await fetch(url, { headers: { "User-Agent": USER_AGENT } });

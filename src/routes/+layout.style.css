@@ -1,3 +1,7 @@
+@import "../styles/flow.css";
+@import "../styles/cluster.css";
+@import "../styles/repel.css";
+
 :root {
     --space-xs: 4px;
     --space-sm: 8px;
@@ -9,7 +13,8 @@
     --gutter: var(--space-md);
     --flow-space: var(--space-lg);
     --primary-font-color: hsl(0deg 0% 18.43%);
-    --secondary-font-color: hsl(0deg 0.18% 22.64%);
+    --secondary-font-color:  hsl(0deg 0% 44.8%);
+    --bold-font-color: hsl(0deg 0.18% 22.64%);
 }
 /* Box sizing rules */
 *,
@@ -72,6 +77,10 @@ a:not([class]) {
   }
 }
 
+label {
+    display: block;
+}
+
 button {
     background-color: #cddce1;
     border: 1px solid #77a8b9;
@@ -79,7 +88,7 @@ button {
     padding-block: var(--space-sm);
     padding-inline: var(--space-md);
     font-weight: bold;
-    color: var(--secondary-font-color);
+    color: var(--bold-font-color);
 
     &:active {
         background-color: #c0cdd1;
@@ -116,34 +125,13 @@ textarea:not([rows]) {
   scroll-margin-block: 5ex;
 }
 
-
-.flow > * + * {
-    margin-block-start: var(--flow-space);
-}
-
-.flow :is(h1) + * {
-    --flow-space: var(--space-xl);
-}
-
 form {
     label {
         font-size: var(--font-sm);
         font-weight: bold;
+        color: var(--bold-font-color);
     }
     input {
         padding: var(--space-sm);
     }
-
-    input + button {
-        padding-block: var(--space-sm);
-        padding-inline: var(--space-lg);
-        border-radius: 8px;
-        margin-inline-start: var(--space-md);
-    }
-}
-
-
-.repel {
-    display: flex;
-    justify-content: space-between;
 }

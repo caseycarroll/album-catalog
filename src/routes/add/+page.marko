@@ -9,11 +9,13 @@
 
 <search>
   <form method="get">
-    <div>
-      <label for="album-search">Album name</label>
+    <div class="cluster">
+      <div class="search-field flow">
+        <label for="album-search">Album name</label>
+        <input id="album-search" type="search" name="q" value=query required>
+      </div>
+      <button type="submit">Search</button>
     </div>
-    <input id="album-search" type="search" name="q" value=query required>
-    <button type="submit">Search</button>
   </form>
 </search>
 
@@ -36,3 +38,14 @@
 
   <@catch|err|>${err.message}</@catch>
 </try>
+
+
+<style>
+    search .search-field {
+        flex-grow: 1;
+        --flow-space: var(--space-sm);
+        input {
+            width: 100%;
+        }
+    }
+</style>

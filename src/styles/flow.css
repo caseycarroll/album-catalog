@@ -1,0 +1,7 @@
+.flow > * + * {
+    margin-block-start: var(--flow-space);
+}
+
+.flow :is(h1) + * {
+    --flow-space: var(--space-xl);
+}
