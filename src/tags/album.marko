@@ -4,12 +4,8 @@ export type Input = typeof albumsTable.$inferSelect & {
   owned: boolean;
 };
 
-// Transient request state only. Whether the album is owned is never copied
-// into component state: the server decides the initial `checked`, and the
-// native checkbox owns the toggled value after that.
-<let/pending=false>
-<let/failed=false>
-
+// Stateless: the server renders whether the album is owned, the button posts
+// the opposite intent, and the page reloads with the refreshed state.
 <form class="album-info" method="post" action="/albums">
   <input type="hidden" name="id" value=input.id>
   <input type="hidden" name="title" value=input.title>
@@ -25,44 +21,9 @@ export type Input = typeof albumsTable.$inferSelect & {
   </div>
 
   <div class="album-info--trailing">
-    <label>
-      <input
-        type="checkbox"
-        name="owned"
-        checked=input.owned
-        disabled=pending
-        async onChange(_event, checkbox) {
-          const form = checkbox.form;
-          if (!form) return;
-          // Capture before `disabled` applies: disabled controls aren't submitted.
-          const body = new FormData(form);
-          pending = true;
-          failed = false;
-          try {
-            const res = await fetch(form.action, {
-              method: "POST",
-              body,
-              headers: { Accept: "application/json" },
-            });
-            if (!res.ok) throw new Error(`Catalog update failed: ${res.status}`);
-          } catch (err) {
-            console.error(err);
-            // Put the checkbox back so it reflects what the server has.
-            checkbox.checked = !checkbox.checked;
-            failed = true;
-          } finally {
-            pending = false;
-          }
-        }
-      >
-      Owned<span class="visually-hidden"> (${input.title})</span>
-    </label>
-    <noscript>
-      <button>Save</button>
-    </noscript>
-    <if=failed>
-      <p role="alert">Couldn't update your catalog. Try again.</p>
-    </if>
+    <button name="intent" value=(input.owned ? "remove" : "add")>
+      ${input.owned ? "Remove" : "Add"}
+    </button>
   </div>
 </form>
 
@@ -88,19 +49,6 @@ export type Input = typeof albumsTable.$inferSelect & {
 
         .album-info--trailing {
             margin-inline-start: auto;
-        }
-
-        label:has(:disabled) {
-            opacity: 0.6;
-        }
-
-        .visually-hidden {
-            clip-path: inset(50%);
-            height: 1px;
-            overflow: hidden;
-            position: absolute;
-            white-space: nowrap;
-            width: 1px;
         }
     }
 </style>
