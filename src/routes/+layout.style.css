@@ -8,7 +8,8 @@
     --font-lg: 1.25rem;
     --gutter: var(--space-md);
     --flow-space: var(--space-lg);
-    --primary-font-color: #2f2f2f;
+    --primary-font-color: hsl(0deg 0% 18.43%);
+    --secondary-font-color: hsl(0deg 0.18% 22.64%);
 }
 /* Box sizing rules */
 *,
@@ -66,6 +67,29 @@ h3, h4 {
 a:not([class]) {
   text-decoration-skip-ink: auto;
   color: currentColor;
+  &:hover {
+      color: var(--secondary-font-color);
+  }
+}
+
+button {
+    background-color: #cddce1;
+    border: 1px solid #77a8b9;
+    border-radius: 10px;
+    padding-block: var(--space-sm);
+    padding-inline: var(--space-md);
+    font-weight: bold;
+    color: var(--secondary-font-color);
+
+    &:active {
+        background-color: #c0cdd1;
+        transform: translate(1px, 1px);
+    }
+
+    &.destructive {
+        background-color: #ffc7c7;
+        border-color: #c67b7b;
+    }
 }
 
 /* Make images easier to work with */
@@ -97,7 +121,7 @@ textarea:not([rows]) {
     margin-block-start: var(--flow-space);
 }
 
-.flow :is(h1, h2, h3) + * {
+.flow :is(h1) + * {
     --flow-space: var(--space-xl);
 }
 

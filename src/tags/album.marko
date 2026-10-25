@@ -2,7 +2,10 @@ import type { albumsTable } from "../db/schema";
 
 export type Input = typeof albumsTable.$inferSelect & {
   owned: boolean;
+  isEditing?: boolean;
 };
+
+<const/isEditing=input.isEditing || false>
 
 <form class="album-info" method="post" action="/albums">
   <input type="hidden" name="id" value=input.id>
@@ -18,11 +21,13 @@ export type Input = typeof albumsTable.$inferSelect & {
     <p>${input.artist}</p>
   </div>
 
-  <div class="album-info--trailing">
-    <button name="intent" value=(input.owned ? "remove" : "add")>
-      ${input.owned ? "Remove" : "Add"}
-    </button>
-  </div>
+  <if=isEditing>
+    <div class="album-info--trailing">
+      <button name="intent" class={ "destructive": input.owned } value=(input.owned ? "remove" : "add")>
+        ${input.owned ? "Remove" : "Add"}
+      </button>
+    </div>
+  </if>
 </form>
 
 <style>
@@ -42,6 +47,7 @@ export type Input = typeof albumsTable.$inferSelect & {
         }
 
         img {
+            corner-shape: squircle;
             border-radius: 10px;
         }
 

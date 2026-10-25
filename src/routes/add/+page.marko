@@ -24,7 +24,7 @@
       <ul role="list">
         <for|{ album, owned }| of=results by=(result => result.album.id)>
           <li>
-            <album ...album owned=owned/>
+            <album ...album owned=owned isEditing />
           </li>
         </for>
       </ul>
