@@ -4,50 +4,42 @@ static function coverArtUrl(mbid: string, size: 250 | 500 = 250) {
 
 <const/{ query, results: resultsPromise }=$global.data>
 
-<main>
-  <h1>Add album</h1>
-  <a href="/">Back to Catalog</a>
+<h1>Add album</h1>
 
-  <search>
-    <form method="get">
+<div>
+  <a href="/">← Back to Catalog</a>
+</div>
+
+<search>
+  <form method="get">
+    <div>
       <label for="album-search">Album name</label>
-      <input id="album-search" type="search" name="q" value=query required>
-      <button type="submit">Search</button>
-    </form>
-  </search>
+    </div>
+    <input id="album-search" type="search" name="q" value=query required>
+    <button type="submit">Search</button>
+  </form>
+</search>
 
-  <try>
-    <@placeholder>Loading...</@placeholder>
-    <await|results|=resultsPromise>
-      <if=results.length>
-        <ul>
-          <for|album| of=results by="mbid">
-            <li>
-              <img
-                src=coverArtUrl(album.mbid)
-                alt=""
-                width="125"
-                height="125"
-              >
-              <p>
-                ${album.title}
-              </p>
-              <p>
-                ${album.artist}
-              </p>
-              <form method="post">
-                <input type="hidden" name="mbid" value=album.mbid>
-                <button>Add</button>
-              </form>
-            </li>
-          </for>
-        </ul>
-      </if>
-      <else if=query>
-        <p>No albums found for “${query}”.</p>
-      </else>
-    </await>
+<try>
+  <@placeholder>Loading...</@placeholder>
+  <await|results|=resultsPromise>
+    <if=results.length>
+      <ul role="list">
+        <for|album| of=results by="mbid">
+          <li>
+            <album ...album />
+            <form method="post">
+              <input type="hidden" name="mbid" value=album.mbid>
+              <button>Add</button>
+            </form>
+          </li>
+        </for>
+      </ul>
+    </if>
+    <else if=query>
+      <p>No albums found for “${query}”.</p>
+    </else>
+  </await>
 
-    <@catch|err|>${err.message}</@catch>
-  </try>
-</main>
+  <@catch|err|>${err.message}</@catch>
+</try>

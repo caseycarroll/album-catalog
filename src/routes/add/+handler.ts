@@ -1,4 +1,5 @@
 import * as v from "valibot";
+import type { albumsTable } from "../../db/schema";
 
 const USER_AGENT = "Casey's Catalog/1.0 (aiyakc@gmail.com)";
 
@@ -16,20 +17,13 @@ const ReleaseGroupSearchSchema = v.object({
   ),
 });
 
-export type AlbumCandidate = {
-  mbid: string;
-  title: string;
-  artist: string;
-  year: string | undefined;
-};
-
 // Lucene special characters must be escaped, otherwise a user typing a quote
 // or colon breaks (or changes the meaning of) the query.
 function escapeLucene(value: string) {
   return value.replace(/[+\-&|!(){}[\]^"~*?:\\/]/g, "\\$&");
 }
 
-export async function searchAlbums(name: string): Promise<AlbumCandidate[]> {
+export async function searchAlbums(name: string): Promise<typeof albumsTable.$inferSelect[]> {
   const url = new URL("https://musicbrainz.org/ws/2/release-group");
   url.search = new URLSearchParams({
     query: `releasegroup:"${escapeLucene(name)}" AND primarytype:album`,
@@ -43,10 +37,10 @@ export async function searchAlbums(name: string): Promise<AlbumCandidate[]> {
   const data = v.parse(ReleaseGroupSearchSchema, await res.json());
 
   return data["release-groups"].map((rg) => ({
-    mbid: rg.id,
+    id: rg.id,
     title: rg.title,
     artist: rg["artist-credit"].map((c) => c.name + (c.joinphrase ?? "")).join(""),
-    year: rg["first-release-date"]?.slice(0, 4) || undefined,
+    image: `http://coverartarchive.org/release-group/${rg.id}/front-250`
   }));
 }
 

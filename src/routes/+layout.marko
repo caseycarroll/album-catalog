@@ -8,6 +8,22 @@
     <title>${$global.meta.pageTitle || "Marko"}</title>
   </head>
   <body>
-    <${input.content}/>
+    <main>
+      <div class="content flow">
+        <${input.content}/>
+      </div>
+    </main>
   </body>
 </html>
+
+<style>
+    main {
+        display: grid;
+        grid-template-columns: minmax(8px, 1fr) minmax(min(40ch, calc(100% - 16px)), 3fr) minmax(8px, 2fr);
+        grid-template-areas: "gutter-start content gutter-end";
+        margin-block-start: var(--space-xl);
+    }
+    .content {
+        grid-area: content;
+    }
+</style>

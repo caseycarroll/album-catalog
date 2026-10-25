@@ -1,16 +1,15 @@
-<main>
-  <h1>Albums</h1>
+<h1>Albums</h1>
 
+<div>
   <a href="/add">Add Album</a>
+</div>
 
-  <await|albums|=$global.data.albums>
-    <ul>
-      <for|album| of=albums>
-        <li>
-          <p>${album.title}</p>
-          <p>${album.artist}</p>
-        </li>
-      </for>
-    </ul>
-  </await>
-</main>
+<await|albums|=$global.data.albums>
+  <ul role="list">
+    <for|album| of=albums>
+      <li>
+        <album ...album />
+      </li>
+    </for>
+  </ul>
+</await>

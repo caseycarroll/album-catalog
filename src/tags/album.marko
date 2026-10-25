@@ -1,0 +1,42 @@
+import type { albumsTable } from "../db/schema";
+
+export type Input = typeof albumsTable.$inferSelect;
+
+<div class="album-info">
+  <img
+    src=input.image
+    alt=""
+    width="80"
+    height="80"
+  >
+  <div>
+    <a href="#">
+      ${input.title}
+    </a>
+    <p>
+      ${input.artist}
+    </p>
+  </div>
+</div>
+
+<style>
+    .album-info {
+        display: flex;
+        --gutter: var(--space-lg);
+        gap: var(--gutter);
+        & > div {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        a:first-of-type {
+            font-size: var(--font-lg);
+            font-weight: bold;
+        }
+
+        img {
+            border-radius: 10px;
+        }
+    }
+</style>
