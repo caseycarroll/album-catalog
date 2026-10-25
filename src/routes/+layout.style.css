@@ -112,3 +112,9 @@ form {
         margin-inline-start: var(--space-md);
     }
 }
+
+
+.repel {
+    display: flex;
+    justify-content: space-between;
+}

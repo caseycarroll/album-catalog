@@ -5,11 +5,12 @@
     <link rel="icon" type="image/png" sizes="32x32" href="./favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Casey's Album Collection">
-    <title>${$global.meta.pageTitle || "Marko"}</title>
+    <title>${$global.meta.pageTitle || "Album Catalog"}</title>
   </head>
   <body>
     <main>
       <div class="content flow">
+        <h1>Casey's Record Catalog</h1>
         <${input.content}/>
       </div>
     </main>
@@ -19,7 +20,7 @@
 <style>
     main {
         display: grid;
-        grid-template-columns: minmax(8px, 1fr) minmax(min(40ch, calc(100% - 16px)), 3fr) minmax(8px, 2fr);
+        grid-template-columns: minmax(8px, 1fr) minmax(min(40ch, calc(100% - 16px)), 600px) minmax(8px, 1fr);
         grid-template-areas: "gutter-start content gutter-end";
         margin-block-start: var(--space-xl);
     }

@@ -14,7 +14,7 @@ import type * as $ from "@marko/run";
 declare module "@marko/run" {
 	interface App extends $.DefineRoutes<{
 		"/": [H1, L1, P1, D1];
-		"/add": [H2, L1, P2];
+		"/add": [H2, L1, P2, D2];
 		"/albums": [H3];
 	}> {}
 }
@@ -231,3 +231,4 @@ declare module "../src/routes/add/+page.marko" {
 }
 
 type D1 = $.Meta<"D1", typeof import("../src/routes/+meta.json")>;
+type D2 = $.Meta<"D2", typeof import("../src/routes/add/+meta.json")>;
