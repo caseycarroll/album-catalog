@@ -69,9 +69,10 @@ h3, h4 {
 }
 
 /* A elements that don't have a class get default styles */
-a:not([class]) {
+a {
   text-decoration-skip-ink: auto;
   color: currentColor;
+  text-underline-offset: 0.2em;
   &:hover {
       color: var(--secondary-font-color);
   }

@@ -3,5 +3,5 @@
 }
 
 .flow :is(h1) + * {
-    --flow-space: var(--space-xl);
+    --flow-space: var(--space-lg);
 }
