@@ -3,20 +3,23 @@
   <a href="/add"><span aria-hidden="true">➕ </span>Add Albums</a>
 </div>
 
+<let/albumSort>
+
 <div class="repel">
   <div> </div>
   <div>
     <label for="album-sort-select">Sort by: </label>
-    <select name="album-sort" id="album-sort-select">
-      <option value="date">Date Added</option>
-      <option value="a-z">A-Z</option>
+    <select name="album-sort" id="album-sort-select" value:=albumSort>
+      <option value="album">Album Title - A-Z</option>
+      <option value="artist">Artist - A-Z</option>
     </select>
   </div>
 </div>
 
 <await|albums|=$global.data.albums>
   <ul role="list">
-    <for|album| of=albums>
+    <const/sortedAlbums=albums.sort((a, b) => albumSort === "artist" ? a.artist.localeCompare(b.artist) : a.title.localeCompare(b.title))>
+    <for|album| of=sortedAlbums by=album => album.title>
       <li>
         <album ...album owned=true/>
       </li>
