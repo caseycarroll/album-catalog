@@ -1,5 +1,5 @@
 {
-  "include": ["src/**/*"],
+  "include": ["src/**/*", ".marko-run/routes.d.ts"],
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "lib": ["dom", "ESNext"],
