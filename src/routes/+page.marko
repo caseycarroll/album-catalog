@@ -7,7 +7,7 @@
 
 <await|albums|=$global.data.albums>
   <ul role="list">
-    <const/sortedAlbums=albums.sort((a, b) => a.artist.localeCompare(b.artist.title) + a.title.localeCompare(b.title))>
+    <const/sortedAlbums=albums.sort((a, b) => a.artist.localeCompare(b.artist) || a.title.localeCompare(b.title))>
     <for|album| of=sortedAlbums by=album => album.title>
       <li>
         <album ...album owned=true/>
