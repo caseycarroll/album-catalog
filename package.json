@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@marko/run": "^0.11.12",
+    "@marko/run-adapter-netlify": "^3.0.7",
     "@types/node": "^26.6.5",
     "drizzle-kit": "^1.0.0-rc.5",
     "typescript": "^6.0.3"
