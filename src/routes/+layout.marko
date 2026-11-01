@@ -19,8 +19,12 @@
 
 <style>
     main {
+        --main-gutter: 16px;
         display: grid;
-        grid-template-columns: minmax(8px, 1fr) minmax(min(40ch, calc(100% - 16px)), 600px) minmax(8px, 1fr);
+        grid-template-columns:
+            minmax(var(--main-gutter), 1fr)
+            minmax(min(40ch, calc(100% - calc(var(--main-gutter) * 2))), 600px)
+            minmax(var(--main-gutter), 1fr);
         grid-template-areas: "gutter-start content gutter-end";
         padding-block-start: calc(var(--space-xl) * 1.25);
     }
