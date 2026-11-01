@@ -149,3 +149,8 @@ form {
         padding: var(--space-sm);
     }
 }
+
+
+a.cta {
+    font-size: 1.125em;
+}

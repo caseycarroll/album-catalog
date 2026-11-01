@@ -3,22 +3,9 @@
   <a class="cta" href="/add"><span aria-hidden="true">➕ </span>Add Albums</a>
 </div>
 
-<let/albumSort="album">
-
-<div class="repel">
-  <div> </div>
-  <div>
-    <label for="album-sort-select">Sort by: </label>
-    <select name="album-sort" id="album-sort-select" value:=albumSort>
-      <option value="album">Album Title - A-Z</option>
-      <option value="artist">Artist - A-Z</option>
-    </select>
-  </div>
-</div>
-
 <await|albums|=$global.data.albums>
   <ul role="list">
-    <const/sortedAlbums=albums.sort((a, b) => albumSort === "artist" ? a.artist.localeCompare(b.artist) : a.title.localeCompare(b.title))>
+    <const/sortedAlbums=albums.sort((a, b) => a.title.localeCompare(b.title))>
     <for|album| of=sortedAlbums by=album => album.title>
       <li>
         <album ...album owned=true/>
@@ -26,9 +13,3 @@
     </for>
   </ul>
 </await>
-
-<style>
-    a.cta {
-        font-size: 1.125em;
-    }
-</style>
