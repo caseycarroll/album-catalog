@@ -3,14 +3,46 @@ import type { albumsTable } from "../db/schema";
 export type Input = typeof albumsTable.$inferSelect & {
   owned: boolean;
   isEditing?: boolean;
+  stayOnPage?: boolean;
+  addOnly?: boolean;
 };
 
 <const/isEditing=input.isEditing || false>
+<let/owned=input.owned>
+<let/saveError="">
 
-<form class="album-info" method="post" action="/albums">
+<form
+  class="album-info"
+  method="post"
+  action="/albums"
+  async onSubmit(event, form) {
+    if (!input.stayOnPage) return;
+    event.preventDefault();
+    saveError = "";
+
+    const body = new FormData(form);
+    body.set("intent", owned ? "remove" : "add");
+
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        body,
+        headers: { Accept: "application/json" },
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Could not update the collection.");
+      owned = data.owned;
+    } catch (error) {
+      saveError = error instanceof Error ? error.message : "Could not update the collection.";
+    }
+  }
+>
   <input type="hidden" name="id" value=input.id>
   <input type="hidden" name="title" value=input.title>
   <input type="hidden" name="artist" value=input.artist>
+  <if=input.stayOnPage>
+    <input type="hidden" name="stayOnPage" value="true">
+  </if>
   <if=input.image>
     <input type="hidden" name="image" value=input.image>
   </if>
@@ -23,12 +55,20 @@ export type Input = typeof albumsTable.$inferSelect & {
 
   <if=isEditing>
     <div class="album-info--trailing">
-      <button name="intent" class={ "destructive": input.owned } value=(input.owned ? "remove" : "add")>
-        ${input.owned ? "Remove" : "Add"}
-      </button>
+      <if=input.addOnly && owned>
+        <span>In collection</span>
+      </if>
+      <else>
+        <button name="intent" class={ "destructive": owned } value=(owned ? "remove" : "add")>
+          ${owned ? "Remove" : "Add"}
+        </button>
+      </else>
     </div>
   </if>
 </form>
+<if=saveError>
+  <p role="alert">${saveError}</p>
+</if>
 
 <style>
     .album-info {

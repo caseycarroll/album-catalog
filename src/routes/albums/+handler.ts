@@ -8,17 +8,22 @@ import { db } from "../../db";
 const albumFormSchema = v.object({
   ...createInsertSchema(albumsTable).entries,
   intent: v.picklist(["add", "remove"]),
+  stayOnPage: v.optional(v.string()),
 });
 
 export const POST = Run.POST({ form: albumFormSchema }, async (ctx) => {
   const [form, issues] = await ctx.body;
   if (issues) return new Response("Invalid album", { status: 400 });
 
-  const { intent, ...album } = form;
+  const { intent, stayOnPage, ...album } = form;
   if (intent === "add") {
     await db.insert(albumsTable).values(album).onConflictDoNothing();
   } else {
     await db.delete(albumsTable).where(eq(albumsTable.id, album.id));
+  }
+
+  if (stayOnPage === "true") {
+    return Response.json({ owned: intent === "add" });
   }
 
   // POST-redirect-GET: reload the page the form was on with refreshed state.

@@ -5,6 +5,7 @@
   "type": "module",
   "dependencies": {
     "@libsql/client": "^0.18.0",
+    "@zxing/browser": "^0.2.1",
     "dotenv": "^18.0.9",
     "drizzle-orm": "^1.0.0-rc.5",
     "marko": "^6.3.42",
