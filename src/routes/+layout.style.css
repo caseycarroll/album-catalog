@@ -2,6 +2,12 @@
 @import "../styles/cluster.css";
 @import "../styles/repel.css";
 
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
 :root {
     --space-xs: 4px;
     --space-sm: 8px;

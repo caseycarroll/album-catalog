@@ -26,7 +26,7 @@
             minmax(min(40ch, calc(100% - calc(var(--main-gutter) * 2))), 600px)
             minmax(var(--main-gutter), 1fr);
         grid-template-areas: "gutter-start content gutter-end";
-        padding-block-start: calc(var(--space-xl) * 1.25);
+        padding-block-start: var(--space-xl);
     }
     .content {
         grid-area: content;
