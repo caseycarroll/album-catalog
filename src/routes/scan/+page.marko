@@ -23,7 +23,7 @@ import type { IScannerControls } from "@zxing/browser";
 
 <if=currentAlbum>
   <for|album| of=[currentAlbum] by="barcode">
-    <album ...album isEditing stayOnPage addOnly />
+    <album ...album isEditing addOnly />
   </for>
 </if>
 <else>
