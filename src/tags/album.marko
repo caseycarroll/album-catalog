@@ -25,7 +25,7 @@ export type Input = typeof albumsTable.$inferSelect & {
     <img src=albumImageUrl(input.id) alt="" width="80" height="80">
   </if>
   <div>
-    <a href="#">${input.title}</a>
+    <p>${input.title}</p>
     <p>${input.artist}</p>
   </div>
 
@@ -54,7 +54,7 @@ export type Input = typeof albumsTable.$inferSelect & {
             justify-content: center;
         }
 
-        a:first-of-type {
+        p:first-of-type {
             font-size: var(--font-lg);
             font-weight: bold;
         }
