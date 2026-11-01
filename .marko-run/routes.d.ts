@@ -10,8 +10,10 @@
 import { NotHandled, NotMatched, GetPaths, PostPaths, GetablePath, GetableHref, PostablePath, PostableHref, Platform } from "@marko/run/namespace";
 import type * as $ from "@marko/run";
 
-
+import type { NetlifyFunctionsPlatformInfo } from '@marko/run-adapter-netlify';
 declare module "@marko/run" {
+	interface Platform extends NetlifyFunctionsPlatformInfo {}
+
 	interface App extends $.DefineRoutes<{
 		"/": [H1, L1, P1, D1];
 		"/add": [H2, L1, P2, D2];
