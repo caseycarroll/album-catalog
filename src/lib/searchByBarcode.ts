@@ -1,5 +1,6 @@
 import * as v from "valibot";
 import type { albumsTable } from "../db/schema";
+import { albumImageUrl } from "./albumImageUrl";
 
 const USER_AGENT = "Casey's Catalog/1.0 (aiyakc@gmail.com)";
 const CACHE_SIZE = 100;
@@ -84,7 +85,7 @@ async function findAlbumByBarcode(barcode: string): Promise<Album | null> {
     artist: release["artist-credit"]
       .map((credit) => `${credit.name ?? credit.artist?.name ?? ""}${credit.joinphrase}`)
       .join(""),
-    image: `https://coverartarchive.org/release-group/${releaseGroup.id}/front-250`,
+    image: albumImageUrl(releaseGroup.id),
   };
 }
 

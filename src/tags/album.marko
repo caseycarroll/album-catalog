@@ -1,4 +1,5 @@
 import type { albumsTable } from "../db/schema";
+import { albumImageUrl } from "../lib/albumImageUrl";
 
 export type Input = typeof albumsTable.$inferSelect & {
   owned: boolean;
@@ -44,10 +45,12 @@ export type Input = typeof albumsTable.$inferSelect & {
     <input type="hidden" name="stayOnPage" value="true">
   </if>
   <if=input.image>
-    <input type="hidden" name="image" value=input.image>
+    <input type="hidden" name="image" value=albumImageUrl(input.id)>
   </if>
 
-  <img src=input.image alt="" width="80" height="80">
+  <if=input.image>
+    <img src=albumImageUrl(input.id) alt="" width="80" height="80">
+  </if>
   <div>
     <a href="#">${input.title}</a>
     <p>${input.artist}</p>

@@ -1,5 +1,6 @@
 import * as v from "valibot";
 import { albumsTable } from "../db/schema";
+import { albumImageUrl } from "./albumImageUrl";
 
 const USER_AGENT = "Casey's Catalog/1.0 (aiyakc@gmail.com)";
 const LRU_SIZE = 10;
@@ -35,7 +36,7 @@ async function searchAlbums(normalizedQuery: string): Promise<typeof albumsTable
     id: rg.id,
     title: rg.title,
     artist: rg["artist-credit"].map((c) => c.name + (c.joinphrase ?? "")).join(""),
-    image: `https://coverartarchive.org/release-group/${rg.id}/front-250`
+    image: albumImageUrl(rg.id),
   }));
 }
 

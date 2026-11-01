@@ -18,8 +18,9 @@ declare module "@marko/run" {
 		"/": [H1, L1, P1, D1];
 		"/add": [H2, L1, P2, D2];
 		"/albums": [H3];
+		"/images/$id": [H4];
 		"/scan": [L1, P3];
-		"/scan/lookup": [H4];
+		"/scan/lookup": [H5];
 	}> {}
 }
 
@@ -128,11 +129,46 @@ declare module "../src/routes/albums/+handler" {
   }
 }
 
-type H4 = $.Handler<"H4", typeof import("../src/routes/scan/lookup/+handler")>;
-declare module "../src/routes/scan/lookup/+handler" {
+type H4 = $.Handler<"H4", typeof import("../src/routes/images/$id/+handler")>;
+declare module "../src/routes/images/$id/+handler" {
   const Run: $.Namespace<H4>;
   namespace Run {
     type Context = $.ContextForFile<H4>;
+  }
+
+  /** @deprecated use `Run` namespace instead */
+  namespace MarkoRun {
+    export { NotHandled, NotMatched, GetPaths, PostPaths, GetablePath, GetableHref, PostablePath, PostableHref, Platform };
+    /** @deprecated use the `Run` namespace instead */
+    export type Route = $.Routes["/images/$id"];
+    /** @deprecated use `Run.Context` instead */
+    export type Context = $.MultiRouteContext<Route>;
+    /** @deprecated define handlers with `Run.GET(...)`, `Run.POST(...)`, etc. instead */
+    export type Handler = $.HandlerLike<Route>;
+    /** @deprecated define handlers with `Run.GET(...)` instead */
+    export type GET = $.HandlerLike<Route, "GET">;
+    /** @deprecated define handlers with `Run.HEAD(...)` instead */
+    export type HEAD = $.HandlerLike<Route, "HEAD">;
+    /** @deprecated define handlers with `Run.POST(...)` instead */
+    export type POST = $.HandlerLike<Route, "POST">;
+    /** @deprecated define handlers with `Run.PUT(...)` instead */
+    export type PUT = $.HandlerLike<Route, "PUT">;
+    /** @deprecated define handlers with `Run.DELETE(...)` instead */
+    export type DELETE = $.HandlerLike<Route, "DELETE">;
+    /** @deprecated define handlers with `Run.PATCH(...)` instead */
+    export type PATCH = $.HandlerLike<Route, "PATCH">;
+    /** @deprecated define handlers with `Run.OPTIONS(...)` instead */
+    export type OPTIONS = $.HandlerLike<Route, "OPTIONS">;
+    /** @deprecated define handlers with `Run.QUERY(...)` instead */
+    export type QUERY = $.HandlerLike<Route, "QUERY">;
+  }
+}
+
+type H5 = $.Handler<"H5", typeof import("../src/routes/scan/lookup/+handler")>;
+declare module "../src/routes/scan/lookup/+handler" {
+  const Run: $.Namespace<H5>;
+  namespace Run {
+    type Context = $.ContextForFile<H5>;
   }
 
   /** @deprecated use `Run` namespace instead */
