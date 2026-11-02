@@ -1,0 +1,81 @@
+import type { BrowserMultiFormatReader } from "@zxing/browser";
+
+<let/barcodeReader=null as BrowserMultiFormatReader | null>
+<script>
+  try {
+    const { BrowserMultiFormatReader, BarcodeFormat } = await import("@zxing/browser");
+
+
+    const reader = new BrowserMultiFormatReader();
+    reader.possibleFormats = [
+      BarcodeFormat.EAN_13,
+      BarcodeFormat.EAN_8,
+      BarcodeFormat.UPC_A,
+      BarcodeFormat.UPC_E,
+    ];
+
+    barcodeReader = reader;
+  } catch(e) {
+
+  }
+</script>
+
+
+<let/barcode="">
+<p>Barcode: ${barcode}</p>
+
+<div class="scanner-container">
+  <video/preview autoplay muted playsinline></video>
+  <let/isScanning=false>
+  <if=!isScanning>
+    <div class="scrim">
+      <button async onClick() {
+        if(!barcodeReader) return;
+        isScanning = true;
+        const result = await barcodeReader.decodeOnceFromVideoDevice(undefined, preview())
+        if(!result) return;
+        barcode = result.getText();
+        isScanning = false;
+      }>📷 Scan</button>
+    </div>
+  </if>
+</div>
+
+<style>
+    .scanner-container {
+        display: grid;
+        aspect-ratio: 4 / 3;
+        border-radius: 12px;
+        border: 1px solid var(--primary-font-color);
+        place-items: center;
+        grid-template-rows: 1fr;
+        grid-template-columns: 1fr;
+        & > * {
+            grid-row: 1;
+            grid-column: 1;
+        }
+
+        & video {
+            object-fit: cover;
+            display: block;
+            width: 100%;
+        }
+
+        & .scrim {
+            display: grid;
+            place-items: center;
+            align-self: stretch;
+            justify-self: stretch;
+            background: rgb(255 255 255 / 0.3); /* semi-transparent so the blur shows */
+            backdrop-filter: blur(12px);
+            border-radius: 12px;
+        }
+    }
+
+    .album-placeholder {
+        width: 100%;
+        border: 3px dotted black;
+        border-radius: 12px;
+        min-height: 72px;
+    }
+</style>

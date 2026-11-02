@@ -5,123 +5,13 @@ import type { IScannerControls } from "@zxing/browser";
   <h2>Scan Barcode</h2>
 </div>
 
-<let/currentBarcode="">
-<let/albumId="">
-<let/albumTitle="">
-<let/albumArtist="">
-<let/albumImage=(null as string | null)>
-<let/owned=false>
-
-<const/currentAlbum=albumId ? {
-  id: albumId,
-  title: albumTitle,
-  artist: albumArtist,
-  image: albumImage,
-  owned,
-  barcode: currentBarcode,
-} : null>
-
-<if=currentAlbum>
-  <for|album| of=[currentAlbum] by="barcode">
-    <album ...album isEditing addOnly />
-  </for>
+<let/album = null>
+<if=album>
+  <album ...album isEditing addOnly />
 </if>
 <else>
   <div class="album-placeholder" aria-hidden="true"></div>
 </else>
 
-<video/preview autoplay muted playsinline></video>
-
-<script>
-  let active = true;
-  let scannerControls: IScannerControls | undefined;
-  let lastScannedBarcode = "";
-  let lookupGeneration = 0;
-
-  $signal.onabort = () => {
-    active = false;
-    scannerControls?.stop();
-  };
-
-  async function lookupAlbum(barcode: string, lookup: number) {
-    try {
-      const response = await fetch(`/scan/lookup?barcode=${encodeURIComponent(barcode)}`);
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "Barcode lookup failed.");
-      if (!active || lookup !== lookupGeneration) return;
-
-      if (!data.album) return;
-
-      albumId = data.album.id;
-      albumTitle = data.album.title;
-      albumArtist = data.album.artist;
-      albumImage = data.album.image;
-      owned = data.owned;
-    } catch (error) {
-      if (!active || lookup !== lookupGeneration) return;
-      console.error("Barcode lookup failed", error);
-    }
-  }
-
-  async function startScanner() {
-    try {
-      const { BrowserMultiFormatReader, BarcodeFormat } = await import("@zxing/browser");
-      if (!active) return;
-
-      const reader = new BrowserMultiFormatReader();
-      reader.possibleFormats = [
-        BarcodeFormat.EAN_13,
-        BarcodeFormat.EAN_8,
-        BarcodeFormat.UPC_A,
-        BarcodeFormat.UPC_E,
-      ];
-
-      scannerControls = await reader.decodeFromVideoDevice(
-        undefined,
-        preview(),
-        (result) => {
-          if (!active || !result) return;
-
-          const barcode = result.getText();
-          if (barcode === lastScannedBarcode) return;
-
-          lastScannedBarcode = barcode;
-          currentBarcode = barcode;
-          albumId = "";
-          albumTitle = "";
-          albumArtist = "";
-          albumImage = null;
-          owned = false;
-
-          const lookup = ++lookupGeneration;
-          lookupAlbum(barcode, lookup);
-        },
-      );
-
-      if (!active) scannerControls.stop();
-    } catch (error) {
-      if (active) console.error("Could not start barcode scanner", error);
-    }
-  }
-
-  startScanner();
-</script>
-
-<style>
-video {
-    display: block;
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-    background: var(--secondary-font-color);
-    border-radius: 12px;
-    border: 1px solid var(--primary-font-color);
-}
-
-.album-placeholder {
-    width: 100%;
-    border: 3px dotted black;
-    border-radius: 12px;
-    min-height: 72px;
-}
-</style>
+// emit barcode read event then lookup album info
+<barcode-scanner />
