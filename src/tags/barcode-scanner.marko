@@ -1,5 +1,10 @@
 import type { BrowserMultiFormatReader } from "@zxing/browser";
 
+export interface Input {
+  barcode: string,
+  barcodeChange?: (barcode: string) => void;
+}
+
 <let/barcodeReader=null as BrowserMultiFormatReader | null>
 <script>
   try {
@@ -21,9 +26,7 @@ import type { BrowserMultiFormatReader } from "@zxing/browser";
 </script>
 
 
-<let/barcode="">
-<p>Barcode: ${barcode}</p>
-
+<let/barcode:=input.barcode>
 <div class="scanner-container">
   <video/preview autoplay muted playsinline></video>
   <let/isScanning=false>
@@ -32,8 +35,10 @@ import type { BrowserMultiFormatReader } from "@zxing/browser";
       <button async onClick() {
         if(!barcodeReader) return;
         isScanning = true;
+
         const result = await barcodeReader.decodeOnceFromVideoDevice(undefined, preview())
         if(!result) return;
+
         barcode = result.getText();
         isScanning = false;
       }>📷 Scan</button>
@@ -59,6 +64,7 @@ import type { BrowserMultiFormatReader } from "@zxing/browser";
             object-fit: cover;
             display: block;
             width: 100%;
+            border-radius: 12px;
         }
 
         & .scrim {

@@ -1,17 +1,50 @@
-import type { IScannerControls } from "@zxing/browser";
-
 <div class="flow">
   <a href="/">← Back to Catalog</a>
   <h2>Scan Barcode</h2>
 </div>
 
-<let/album = null>
+<let/album=null>
+<let/barcode="">
+<let/isLoading=false>
+<script>
+  if (!barcode) return;
+  const signal = $signal;
+  isLoading = true;
+
+  try {
+    const res = await fetch(`/scan/lookup?barcode=${encodeURIComponent(barcode)}`, { signal });
+    if (res.ok && !signal.aborted) {
+      const data = await res.json();
+      album = {...data.album, owned: data.owned }
+    }
+  } catch(error) {
+    console.error(error);
+  }
+
+  isLoading = false;
+</script>
+
 <if=album>
   <album ...album isEditing addOnly />
 </if>
 <else>
-  <div class="album-placeholder" aria-hidden="true"></div>
+  <div class="album-placeholder" aria-hidden="true">
+    <if=isLoading>
+      <loading />
+    </if>
+  </div>
 </else>
 
-// emit barcode read event then lookup album info
-<barcode-scanner />
+<barcode-scanner barcode:=barcode />
+
+<style>
+    .album-placeholder {
+        width: 100%;
+        border: 3px dotted black;
+        border-radius: 12px;
+        display: grid;
+        padding: var(--space-md);
+        align-items: center;
+        min-height: 72px;
+    }
+</style>
