@@ -1,9 +1,11 @@
+import type { Input as AlbumType } from '../../tags/album.marko';
+
 <div class="flow">
   <a href="/">← Back to Catalog</a>
   <h2>Scan Barcode</h2>
 </div>
 
-<let/album=null>
+<let/album=null as AlbumType | null>
 <let/barcode="">
 <let/isLoading=false>
 <script>
@@ -12,7 +14,7 @@
   isLoading = true;
 
   try {
-    const res = await fetch(`/scan/lookup?barcode=${encodeURIComponent(barcode)}`, { signal });
+    const res = await fetch(Run.href("/scan/lookup", { search: { barcode } }), { signal });
     if (res.ok && !signal.aborted) {
       const data = await res.json();
       album = {...data.album, owned: data.owned }
