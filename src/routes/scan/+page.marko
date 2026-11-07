@@ -1,9 +1,7 @@
 import type { Input as AlbumType } from '../../tags/album.marko';
 
-<div class="flow">
-  <a href="/">← Back to Catalog</a>
-  <h2>Scan Barcode</h2>
-</div>
+<a href="/" style={display: "block"}>← Back to Catalog</a>
+<h2>Scan Barcode</h2>
 
 <let/album=null as AlbumType | null>
 <let/barcode="">

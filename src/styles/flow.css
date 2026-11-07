@@ -2,6 +2,6 @@
     margin-block-start: var(--flow-space);
 }
 
-.flow :is(h1) + * {
-    --flow-space: var(--space-lg);
+.flow :is(h1, h2) + * {
+    --flow-space: var(--space-md);
 }
