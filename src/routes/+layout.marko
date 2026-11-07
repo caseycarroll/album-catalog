@@ -12,6 +12,57 @@
           navigation: auto;
         }
       }
+
+      @keyframes slide-out {
+        0% {
+          transform: translateY(0%);
+          opacity: 1;
+        }
+
+        75% {
+            opacity: 0;
+        }
+
+        100% {
+          transform: translateY(24px);
+          opacity: 0;
+        }
+      }
+
+      @keyframes slide-in {
+        from {
+          transform: translateY(24px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0%);
+          opacity: 1;
+        }
+      }
+
+      ::view-transition-old(albums-heading),
+      ::view-transition-old(album-list),
+      ::view-transition-old(add-by-title),
+      ::view-transition-old(search-bar) {
+        animation-name: slide-out;
+        animation-duration: 250ms;
+        animation-timing-function: cubic-bezier(0.3, 0, 1, 1);
+      }
+
+      ::view-transition-new(albums-heading),
+      ::view-transition-new(album-list),
+      ::view-transition-new(add-by-title),
+      ::view-transition-new(search-bar) {
+        animation-name: slide-in;
+        animation-delay: 150ms;
+        animation-duration: 350ms;
+        animation-timing-function: cubic-bezier(0, 0, 0, 1);
+      }
+
+      ::view-transition-new(album-list),
+      ::view-transition-new(search-bar) {
+          animation-delay: 200ms;
+      }
     </html-style>
   </head>
   <body>
@@ -25,17 +76,17 @@
 </html>
 
 <style>
-    main {
-        --main-gutter: 16px;
-        display: grid;
-        grid-template-columns:
-            minmax(var(--main-gutter), 1fr)
-            minmax(min(40ch, calc(100% - calc(var(--main-gutter) * 2))), 600px)
-            minmax(var(--main-gutter), 1fr);
-        grid-template-areas: "gutter-start content gutter-end";
-        padding-block-start: var(--space-xl);
-    }
-    .content {
-        grid-area: content;
-    }
+  main {
+    --main-gutter: 16px;
+    display: grid;
+    grid-template-columns:
+      minmax(var(--main-gutter), 1fr)
+      minmax(min(40ch, calc(100% - calc(var(--main-gutter) * 2))), 600px)
+      minmax(var(--main-gutter), 1fr);
+    grid-template-areas: "gutter-start content gutter-end";
+    padding-block-start: var(--space-xl);
+  }
+  .content {
+    grid-area: content;
+  }
 </style>
