@@ -7,32 +7,10 @@
     <meta name="description" content="Casey's Album Collection">
     <title>${$global.meta.pageTitle || "Album Catalog"}</title>
     <html-style>
-      html {
-        background-color: #f9f9f9;
-      }
       @media (prefers-reduced-motion: no-preference) {
         @view-transition {
           navigation: auto;
         }
-      }
-
-      ::view-transition-group(add-by-title) {
-        animation-duration: 500ms;
-        animation-timing-function: cubic-bezier(0.8, -0.4, 0.5, 1);
-      }
-
-      /* Back link fades in as the heading transition settles */
-      ::view-transition-new(back-link) {
-        animation-delay: 350ms;
-        animation-duration: 200ms;
-        animation-timing-function: ease-out;
-      }
-
-      /* Back link fades out quickly when returning to the catalog */
-      ::view-transition-old(back-link) {
-        animation-delay: 0ms;
-        animation-duration: 120ms;
-        animation-timing-function: ease-in;
       }
     </html-style>
   </head>
