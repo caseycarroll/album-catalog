@@ -68,8 +68,13 @@ h3, h4 {
   text-wrap: balance;
 }
 
-h1, h2 {
-    max-width: 15ch;
+h1 {
+    font-size: 1rem;
+    color: var(--bold-font-color);
+}
+
+h2 {
+    font-size: 1.75rem;
 }
 
 /* A elements that don't have a class get default styles */
