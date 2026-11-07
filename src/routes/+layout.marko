@@ -13,7 +13,7 @@
         }
       }
 
-      @keyframes slide-out {
+      @keyframes slide-down {
         0% {
           transform: translateY(0%);
           opacity: 1;
@@ -29,7 +29,7 @@
         }
       }
 
-      @keyframes slide-in {
+      @keyframes slide-up {
         from {
           transform: translateY(24px);
           opacity: 0;
@@ -40,12 +40,45 @@
         }
       }
 
+      @keyframes slide-x-in-right{
+          from {
+              opacity: 0;
+              transform: translateX(-8px);
+          }
+          to {
+              opacity: 1;
+              transform: translateX(0);
+          }
+      }
+
+      @keyframes slide-x-out-right {
+          from {
+              opacity: 1;
+              transform: translateX(0);
+          }
+          to {
+              opacity: 0;
+              transform: translateX(8px);
+          }
+      }
+
+      @keyframes slide-x-out-left {
+          from {
+              opacity: 1;
+              transform: translateX(0);
+          }
+          to {
+              opacity: 0;
+              transform: translateX(-8px);
+          }
+      }
+
       ::view-transition-old(albums-heading),
       ::view-transition-old(album-list),
       ::view-transition-old(add-by-title),
       ::view-transition-old(search-bar) {
-        animation-name: slide-out;
-        animation-duration: 250ms;
+        animation-name: slide-down;
+        animation-duration: 200ms;
         animation-timing-function: cubic-bezier(0.3, 0, 1, 1);
       }
 
@@ -53,15 +86,27 @@
       ::view-transition-new(album-list),
       ::view-transition-new(add-by-title),
       ::view-transition-new(search-bar) {
-        animation-name: slide-in;
-        animation-delay: 150ms;
-        animation-duration: 350ms;
+        animation-name: slide-up;
+        animation-delay: 125ms;
+        animation-duration: 300ms;
         animation-timing-function: cubic-bezier(0, 0, 0, 1);
       }
 
       ::view-transition-new(album-list),
       ::view-transition-new(search-bar) {
-          animation-delay: 200ms;
+          animation-delay: 175ms;
+      }
+
+      ::view-transition-new(back),
+      ::view-transition-old(actions)
+      {
+          animation-name: slide-x-in-right;
+          animation-timing-function: cubic-bezier(0.3, 0, 1, 1);
+          animation-duration: 175px;
+      }
+
+      ::view-transition-old(actions) {
+          animation-name: slide-x-out-right;
       }
     </html-style>
   </head>
