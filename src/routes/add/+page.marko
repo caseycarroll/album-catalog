@@ -5,10 +5,15 @@
 
 <search style="flex-grow: 1; view-transition-name: search-bar;">
   <form method="get">
-    <div class="cluster">
+    <div class="cluster" style={"--gutter": "0px"}>
       <div class="search-field flow">
         <label for="album-search">Album name</label>
-        <input id="album-search" type="search" name="q" value=query required>
+        <input
+          id="album-search"
+          type="search"
+          name="q"
+          value=query
+          required>
       </div>
       <button type="submit">Search</button>
     </div>
@@ -40,11 +45,33 @@
 
 
 <style>
-    search .search-field {
-        flex-grow: 1;
-        --flow-space: var(--space-sm);
-        input {
-            width: 100%;
+    search {
+        button {
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 12px;
+        }
+
+        button, input {
+            padding-block: 16px;
+            padding-inline: 16px;
+        }
+
+        & .search-field {
+            flex-grow: 1;
+            --flow-space: var(--space-sm);
+            input {
+                width: 100%;
+                border-right-style: none;
+                border-top-right-radius: 0px;
+                border-bottom-right-radius: 0px;
+                border-top-left-radius: 12px;
+                border-bottom-left-radius: 12px;
+                corner-shape: squircle;
+                border-color: #bababa;
+                box-shadow: 1px 1px 3px 0px #d1d1d1;
+            }
         }
     }
 </style>

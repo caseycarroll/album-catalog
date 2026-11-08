@@ -46,7 +46,7 @@ export type Input = typeof albumsTable.$inferSelect & {
 <style>
     .album-info {
         display: flex;
-        --gutter: var(--space-md);
+        --gutter: var(--space-lg);
         gap: var(--gutter);
         & > div {
             display: flex;
@@ -62,7 +62,7 @@ export type Input = typeof albumsTable.$inferSelect & {
         img {
             corner-shape: squircle;
             border-radius: 10px;
-            border: 1px solid var(--secondary-font-color);
+            box-shadow: 2px 2px 4px 0px #0000001c;
         }
 
         .album-info--trailing {
