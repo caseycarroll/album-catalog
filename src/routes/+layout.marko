@@ -7,6 +7,7 @@
     <meta name="description" content="Casey's Album Collection">
     <title>${$global.meta.pageTitle || "Album Catalog"}</title>
     <html-style>
+     html { background: #f9f9f9 }
       @media (prefers-reduced-motion: no-preference) {
         @view-transition {
           navigation: auto;
@@ -44,6 +45,17 @@
           from {
               opacity: 0;
               transform: translateX(-8px);
+          }
+          to {
+              opacity: 1;
+              transform: translateX(0);
+          }
+      }
+
+      @keyframes slide-x-in-left {
+          from {
+              opacity: 0;
+              transform: translateX(8px);
           }
           to {
               opacity: 1;
@@ -97,21 +109,34 @@
           animation-delay: 175ms;
       }
 
-      ::view-transition-new(back),
-      ::view-transition-old(actions)
-      {
-          animation-name: slide-x-in-right;
+      ::view-transition-old(actions) {
+          animation-name: slide-x-out-right;
           animation-timing-function: cubic-bezier(0.3, 0, 1, 1);
-          animation-duration: 175px;
+          animation-duration: 150ms;
       }
 
       ::view-transition-new(back) {
-          animation-delay: 100ms;
+          animation-name: slide-x-in-right;
+          animation-timing-function: cubic-bezier(0, 0, 0, 1);
+          animation-duration: 175ms;
+          animation-delay: 150ms;
       }
 
-      ::view-transition-old(actions) {
-          animation-name: slide-x-out-right;
+
+      ::view-transition-old(back)
+      {
+          animation-name: slide-x-out-left;
+          animation-timing-function: cubic-bezier(0.3, 0, 1, 1);
+          animation-duration: 125ms;
       }
+
+      ::view-transition-new(actions):only-child {
+          animation-name: slide-x-in-left;
+          animation-timing-function: cubic-bezier(0, 0, 0, 1);
+          animation-duration: 175ms;
+          animation-delay: 125ms;
+      }
+
     </html-style>
   </head>
   <body>
