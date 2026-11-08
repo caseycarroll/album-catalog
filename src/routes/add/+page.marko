@@ -5,17 +5,20 @@
 
 <search style="flex-grow: 1; view-transition-name: search-bar;">
   <form method="get">
-    <div class="cluster" style={"--gutter": "0px"}>
-      <div class="search-field flow">
-        <label for="album-search">Album name</label>
+    <div class="search-field flow">
+      <label for="album-search">Album name</label>
+      <div style={
+        display: "flex",
+        "align-items": "stretch"
+      }>
         <input
           id="album-search"
           type="search"
           name="q"
           value=query
           required>
+        <button type="submit">Search</button>
       </div>
-      <button type="submit">Search</button>
     </div>
   </form>
 </search>
