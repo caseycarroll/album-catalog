@@ -87,8 +87,8 @@
 
       ::view-transition-old(albums-heading),
       ::view-transition-old(album-list),
-      ::view-transition-old(add-by-title),
-      ::view-transition-old(search-bar) {
+      ::view-transition-old(add-by-title):only-child,
+      ::view-transition-old(search-bar):only-child {
         animation-name: slide-down;
         animation-duration: 200ms;
         animation-timing-function: cubic-bezier(0.3, 0, 1, 1);
@@ -96,8 +96,8 @@
 
       ::view-transition-new(albums-heading),
       ::view-transition-new(album-list),
-      ::view-transition-new(add-by-title),
-      ::view-transition-new(search-bar) {
+      ::view-transition-new(add-by-title):only-child,
+      ::view-transition-new(search-bar):only-child {
         animation-name: slide-up;
         animation-delay: 125ms;
         animation-duration: 300ms;
@@ -105,17 +105,17 @@
       }
 
       ::view-transition-new(album-list),
-      ::view-transition-new(search-bar) {
+      ::view-transition-new(search-bar):only-child {
           animation-delay: 175ms;
       }
 
-      ::view-transition-old(actions) {
+      ::view-transition-old(actions):only-child {
           animation-name: slide-x-out-right;
           animation-timing-function: cubic-bezier(0.3, 0, 1, 1);
           animation-duration: 150ms;
       }
 
-      ::view-transition-new(back) {
+      ::view-transition-new(back):only-child {
           animation-name: slide-x-in-right;
           animation-timing-function: cubic-bezier(0, 0, 0, 1);
           animation-duration: 175ms;
@@ -123,7 +123,7 @@
       }
 
 
-      ::view-transition-old(back)
+      ::view-transition-old(back):only-child
       {
           animation-name: slide-x-out-left;
           animation-timing-function: cubic-bezier(0.3, 0, 1, 1);
