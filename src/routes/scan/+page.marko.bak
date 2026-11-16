@@ -1,7 +1,7 @@
 import type { IScannerControls } from "@zxing/browser";
 
 <div class="flow">
-  <a href="/">← Back to Catalog</a>
+  <a href="/">← Back to Collection</a>
   <h2>Scan Barcode</h2>
 </div>
 
