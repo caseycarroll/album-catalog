@@ -1,8 +1,8 @@
 import * as v from "valibot";
 import { albumsTable } from "../db/schema";
 import { albumImageUrl } from "./albumImageUrl";
+import { musicBrainzFetch } from "./musicbrainz";
 
-const USER_AGENT = "Casey's Catalog/1.0 (aiyakc@gmail.com)";
 const LRU_SIZE = 10;
 
 const ReleaseGroupSearchSchema = v.object({
@@ -28,7 +28,7 @@ async function searchAlbums(normalizedQuery: string): Promise<typeof albumsTable
   }).toString();
 
   try {
-    const res = await fetch(url, { headers: { "User-Agent": USER_AGENT } });
+    const res = await musicBrainzFetch(url);
     if (!res.ok) throw new Error(`MusicBrainz responded ${res.status}`);
 
     const data = v.parse(ReleaseGroupSearchSchema, await res.json());

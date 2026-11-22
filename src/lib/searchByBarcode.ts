@@ -1,8 +1,8 @@
 import * as v from "valibot";
 import type { albumsTable } from "../db/schema";
 import { albumImageUrl } from "./albumImageUrl";
+import { musicBrainzFetch } from "./musicbrainz";
 
-const USER_AGENT = "Casey's Catalog/1.0 (aiyakc@gmail.com)";
 const CACHE_SIZE = 100;
 
 const ArtistCreditSchema = v.object({
@@ -33,28 +33,11 @@ const ReleaseLookupSchema = v.object({
 
 type Album = typeof albumsTable.$inferSelect;
 
-let requestQueue = Promise.resolve();
-let nextRequestAt = 0;
-
-// MusicBrainz asks clients to keep requests to roughly one per second.
-function requestMusicBrainz(url: URL) {
-  const request = requestQueue.then(async () => {
-    const delay = Math.max(0, nextRequestAt - Date.now());
-    if (delay) await new Promise((resolve) => setTimeout(resolve, delay));
-    nextRequestAt = Date.now() + 1100;
-
-    return fetch(url, { headers: { "User-Agent": USER_AGENT } });
-  });
-
-  requestQueue = request.then(() => undefined, () => undefined);
-  return request;
-}
-
 async function lookupReleaseGroup(releaseId: string) {
   const url = new URL(`https://musicbrainz.org/ws/2/release/${releaseId}`);
   url.search = new URLSearchParams({ inc: "release-groups", fmt: "json" }).toString();
 
-  const response = await requestMusicBrainz(url);
+  const response = await musicBrainzFetch(url);
   if (!response.ok) throw new Error(`MusicBrainz responded ${response.status}`);
 
   const data = v.parse(ReleaseLookupSchema, await response.json());
@@ -69,7 +52,7 @@ async function findAlbumByBarcode(barcode: string): Promise<Album | null> {
     limit: "10",
   }).toString();
 
-  const response = await requestMusicBrainz(url);
+  const response = await musicBrainzFetch(url);
   if (!response.ok) throw new Error(`MusicBrainz responded ${response.status}`);
 
   const data = v.parse(ReleaseSearchSchema, await response.json());
