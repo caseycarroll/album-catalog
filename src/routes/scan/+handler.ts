@@ -4,12 +4,10 @@ import { db } from "../../db";
 import { albumsTable } from "../../db/schema";
 import { searchByBarcode } from "../../lib/searchByBarcode";
 
-// Each status is one complete, renderable state.
 export type ScanResult =
   | { status: "found"; album: typeof albumsTable.$inferSelect; owned: boolean }
   | { status: "not-found" };
 
-// Failures reject. The page's <try>/<catch> owns error rendering.
 async function lookup(barcode: string): Promise<ScanResult> {
   try {
     const album = await searchByBarcode(barcode);
@@ -30,7 +28,6 @@ async function lookup(barcode: string): Promise<ScanResult> {
 
 export const GET = Run.GET(
   {
-    // An invalid or missing barcode renders the idle page rather than an error.
     search: v.object({
       barcode: v.optional(v.pipe(v.string(), v.regex(/^\d{8,14}$/))),
     }),
@@ -39,7 +36,6 @@ export const GET = Run.GET(
     const [search, issues] = ctx.search;
     const barcode = issues ? undefined : search.barcode;
 
-    // Not awaited: the page shell streams immediately and <await> renders the result.
     return next({
       barcode,
       scan: barcode ? lookup(barcode) : undefined,
