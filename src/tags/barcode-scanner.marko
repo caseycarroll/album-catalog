@@ -1,10 +1,5 @@
 import type { BrowserMultiFormatReader } from "@zxing/browser";
 
-export interface Input {
-  barcode: string,
-  barcodeChange?: (barcode: string) => void;
-}
-
 <let/barcodeReader=null as BrowserMultiFormatReader | null>
 <script>
   try {
@@ -26,7 +21,6 @@ export interface Input {
 </script>
 
 
-<let/barcode:=input.barcode>
 <div class="scanner-container">
   <video/preview autoplay muted playsinline></video>
   <let/isScanning=false>
@@ -40,7 +34,8 @@ export interface Input {
         isScanning = false;
 
         if(!result) return;
-        barcode = result.getText();
+        // Let the server render the result. replace() keeps scans out of history.
+        location.replace(Run.href("/scan", { search: { barcode: result.getText() } }));
       }>📷 Scan</button>
     </div>
   </if>

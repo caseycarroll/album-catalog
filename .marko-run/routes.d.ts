@@ -19,8 +19,7 @@ declare module "@marko/run" {
 		"/add": [H2, L1, P2, D2];
 		"/albums": [H3];
 		"/images/$id": [H4];
-		"/scan": [L1, P3];
-		"/scan/lookup": [H5];
+		"/scan": [H5, L1, P3];
 	}> {}
 }
 
@@ -164,8 +163,8 @@ declare module "../src/routes/images/$id/+handler" {
   }
 }
 
-type H5 = $.Handler<"H5", typeof import("../src/routes/scan/lookup/+handler")>;
-declare module "../src/routes/scan/lookup/+handler" {
+type H5 = $.Handler<"H5", typeof import("../src/routes/scan/+handler")>;
+declare module "../src/routes/scan/+handler" {
   const Run: $.Namespace<H5>;
   namespace Run {
     type Context = $.ContextForFile<H5>;
@@ -175,7 +174,7 @@ declare module "../src/routes/scan/lookup/+handler" {
   namespace MarkoRun {
     export { NotHandled, NotMatched, GetPaths, PostPaths, GetablePath, GetableHref, PostablePath, PostableHref, Platform };
     /** @deprecated use the `Run` namespace instead */
-    export type Route = $.Routes["/scan/lookup"];
+    export type Route = $.Routes["/scan"];
     /** @deprecated use `Run.Context` instead */
     export type Context = $.MultiRouteContext<Route>;
     /** @deprecated define handlers with `Run.GET(...)`, `Run.POST(...)`, etc. instead */
