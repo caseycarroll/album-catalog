@@ -8,12 +8,13 @@ import type { Input as AlbumType } from '../../tags/album.marko';
 <let/isLoading=false>
 <script>
   if (!barcode) return;
-  const signal = $signal;
+
+  album = null;
   isLoading = true;
 
   try {
-    const res = await fetch(Run.href("/scan/lookup", { search: { barcode } }), { signal });
-    if (res.ok && !signal.aborted) {
+    const res = await fetch(Run.href("/scan/lookup", { search: { barcode } }), { $signal });
+    if (res.ok && !$signal.aborted) {
       const data = await res.json();
       album = {...data.album, owned: data.owned }
     }

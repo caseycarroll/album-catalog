@@ -37,10 +37,10 @@ export interface Input {
         isScanning = true;
 
         const result = await barcodeReader.decodeOnceFromVideoDevice(undefined, preview())
-        if(!result) return;
-
-        barcode = result.getText();
         isScanning = false;
+
+        if(!result) return;
+        barcode = result.getText();
       }>📷 Scan</button>
     </div>
   </if>
