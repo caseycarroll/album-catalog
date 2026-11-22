@@ -27,17 +27,26 @@ async function searchAlbums(normalizedQuery: string): Promise<typeof albumsTable
     limit: "15",
   }).toString();
 
-  const res = await fetch(url, { headers: { "User-Agent": USER_AGENT } });
-  if (!res.ok) throw new Error(`MusicBrainz responded ${res.status}`);
+  try {
+    const res = await fetch(url, { headers: { "User-Agent": USER_AGENT } });
+    if (!res.ok) throw new Error(`MusicBrainz responded ${res.status}`);
 
-  const data = v.parse(ReleaseGroupSearchSchema, await res.json());
-
-  return data["release-groups"].map((rg) => ({
-    id: rg.id,
-    title: rg.title,
-    artist: rg["artist-credit"].map((c) => c.name + (c.joinphrase ?? "")).join(""),
-    image: albumImageUrl(rg.id),
-  }));
+    const data = v.parse(ReleaseGroupSearchSchema, await res.json());
+    return data["release-groups"].map((rg) => ({
+      id: rg.id,
+      title: rg.title,
+      artist: rg["artist-credit"].map((c) => c.name + (c.joinphrase ?? "")).join(""),
+      image: albumImageUrl(rg.id),
+    }));
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error("searchAlbums: ", {
+      level: "error",
+      query: normalizedQuery,
+      message: message
+    })
+    throw error;
+  }
 }
 
 const cache = new Map<string, ReturnType<typeof searchAlbums>>();
